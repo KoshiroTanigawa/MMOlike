@@ -7,9 +7,9 @@ public class PlayerController : MonoBehaviour
     //フィールド変数
     [Tooltip("キャラクターのRigitbodyのメンバー変数")] Rigidbody _rb;
 
-    [SerializeField] [Header("移動速度")] [Tooltip("キャラクターの移動速度のためのメンバー変数")] float _speed;
-    [SerializeField] [Header("ジャンプ力")] [Tooltip("キャラクターのジャンプ力のためのメンバー変数")] float _jumpForce;
-    [SerializeField] [Header("重力の大きさ（倍率）")] [Tooltip("重力の大きさのためのメンバー変数")] float _gravityScale;
+    [SerializeField] [Header("移動速度")] [Tooltip("キャラクターの移動速度のためのメンバー変数")] float _speed = 1.0f;
+    [SerializeField] [Header("ジャンプ力")] [Tooltip("キャラクターのジャンプ力のためのメンバー変数")] float _jumpForce = 1.0f;
+    [SerializeField] [Header("重力の大きさ（倍率）")] [Tooltip("重力の大きさのためのメンバー変数")] float _gravityScale = 1.5f;
 
     [Tooltip("キャラクターが地面に接地しているかのフラグ")] bool _onGround;
     [Tooltip("キャラクターが移動可能か判定するフラグ")] bool _isMoving;
@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
-        Physics.gravity = new Vector3(0,_gravityScale,0);
+        Physics.gravity = new Vector3(0, Physics.gravity.y *_gravityScale, 0);
         _onGround = true;
         _isMoving = true;
     }
@@ -47,18 +47,12 @@ public class PlayerController : MonoBehaviour
         if (_isMoving) 
         {
             //水平方向
-            float inputHorizontal = Input.GetAxis("Horizontal");
-            if (inputHorizontal == 1)
-                transform.Translate(Vector3.right * _speed * Time.deltaTime);
-            if (inputHorizontal == -1)
-                transform.Translate(Vector3.left * _speed * Time.deltaTime);
+            float inputHorizontal = Input.GetAxis("Horizontal") * _speed * Time.deltaTime;
+            _rb.MovePosition(new Vector3(inputHorizontal, 0f, 0f) + _rb.position);
 
             //垂直方向
-            float inputVertical = Input.GetAxis("Vertical");
-            if (inputVertical == 1)
-                transform.Translate(Vector3.forward * _speed * Time.deltaTime);
-            if (inputVertical == -1)
-                transform.Translate(Vector3.back * _speed * Time.deltaTime);
+            float inputVertical = Input.GetAxis("Vertical") * _speed * Time.deltaTime;
+            _rb.MovePosition(new Vector3(0f, 0f, inputVertical) + _rb.position);
         }
     }
 
