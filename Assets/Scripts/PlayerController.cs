@@ -1,11 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class PlayerController : MonoBehaviour
 {
     //フィールド変数
     [Tooltip("キャラクターのRigitbodyのメンバー変数")] Rigidbody _rb;
+    [Tooltip("キャラクターのAnimatorのメンバー変数")] Animator _anim;
 
     [SerializeField] [Header("移動速度")] [Tooltip("キャラクターの移動速度のためのメンバー変数")] float _speed = 1.0f;
     [SerializeField] [Header("ジャンプ力")] [Tooltip("キャラクターのジャンプ力のためのメンバー変数")] float _jumpForce = 1.0f;
@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
+        _anim = GetComponent<Animator>();
         Physics.gravity = new Vector3(0, Physics.gravity.y *_gravityScale, 0);
         _onGround = true;
         _isMoving = true;
@@ -31,10 +32,11 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary> キャラクターのジャンプに関する処理 /// </summary>
-    private void PlayerJump()
+    void PlayerJump()
     {
         if (Input.GetKeyDown(KeyCode.Space) && _onGround)
         {
+            _anim.SetBool("isJumping", true);
             _rb.AddForce(0, _jumpForce, 0, ForceMode.Impulse);
             _onGround = false;
             _isMoving = false;
@@ -46,13 +48,27 @@ public class PlayerController : MonoBehaviour
     {
         if (_isMoving) 
         {
-            //水平方向
-            float inputHorizontal = Input.GetAxis("Horizontal") * _speed * Time.deltaTime;
-            _rb.MovePosition(new Vector3(inputHorizontal, 0f, 0f) + _rb.position);
+            //Forward
+            if (Input.GetKey(KeyCode.W))
+                _anim.SetBool("isForward", true);
+            if (Input.GetKeyUp(KeyCode.W))
+                _anim.SetBool("isForward", false);
+            //Backward
+            if (Input.GetKey(KeyCode.S))
+                _anim.SetBool("isBackward", true);
+            if (Input.GetKeyUp(KeyCode.S))
+                _anim.SetBool("isBackward", false);
+            //Right
+            if (Input.GetKey(KeyCode.D))
+                _anim.SetBool("isRight", true);
+            if (Input.GetKeyUp(KeyCode.D))
+                _anim.SetBool("isRight", false);
+            //Left
+            if (Input.GetKey(KeyCode.A))
+                _anim.SetBool("isLeft", true);
+            if (Input.GetKeyUp(KeyCode.A))
+                _anim.SetBool("isLeft", false);
 
-            //垂直方向
-            float inputVertical = Input.GetAxis("Vertical") * _speed * Time.deltaTime;
-            _rb.MovePosition(new Vector3(0f, 0f, inputVertical) + _rb.position);
         }
     }
 
@@ -63,6 +79,7 @@ public class PlayerController : MonoBehaviour
         {
             _onGround = true;
             _isMoving = true;
+            _anim.SetBool("isJumping", false);
         }
     }
 }
