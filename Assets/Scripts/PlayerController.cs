@@ -13,14 +13,16 @@ public class PlayerController : MonoBehaviour
 
     [Tooltip("キャラクターが地面に接地しているかのフラグ")] bool _onGround;
     [Tooltip("キャラクターが移動可能か判定するフラグ")] bool _isMoving;
-    [Tooltip("キャラクターが移動可能か判定するフラグ")] bool _isAttack;
+    [Tooltip("キャラクターが攻撃可能か判定するフラグ")] bool _isAttack;
     //
 
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
         _anim = GetComponent<Animator>();
+        //重力変更
         Physics.gravity = new Vector3(0, Physics.gravity.y *_gravityScale, 0);
+        //フラグOn
         _onGround = true;
         _isMoving = true;
     }
@@ -48,26 +50,9 @@ public class PlayerController : MonoBehaviour
     {
         if (_isMoving) 
         {
-            //Forward
-            if (Input.GetKey(KeyCode.W))
-                _anim.SetBool("isForward", true);
-            if (Input.GetKeyUp(KeyCode.W))
-                _anim.SetBool("isForward", false);
-            //Backward
-            if (Input.GetKey(KeyCode.S))
-                _anim.SetBool("isBackward", true);
-            if (Input.GetKeyUp(KeyCode.S))
-                _anim.SetBool("isBackward", false);
-            //Right
-            if (Input.GetKey(KeyCode.D))
-                _anim.SetBool("isRight", true);
-            if (Input.GetKeyUp(KeyCode.D))
-                _anim.SetBool("isRight", false);
-            //Left
-            if (Input.GetKey(KeyCode.A))
-                _anim.SetBool("isLeft", true);
-            if (Input.GetKeyUp(KeyCode.A))
-                _anim.SetBool("isLeft", false);
+            float inputVertical = Input.GetAxisRaw("Vertical");
+            float inputHorizontal = Input.GetAxisRaw("Horizontal");
+            Vector2 direction = new Vector2(inputHorizontal, inputVertical).normalized;
 
         }
     }
