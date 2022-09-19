@@ -5,18 +5,19 @@ using Cinemachine;
 
 public class CameraContoroller : MonoBehaviour
 {
-    CinemachineVirtualCamera _virtualCamera;
+    CinemachineFreeLook _freeLookCamera;
     CinemachineOrbitalTransposer _orbitalTransposer;
     Vector2 lastMousePosition;
     Vector2 _cameraAngle = new Vector2(0, 0);   // カメラの角度を格納する変数
 
-    [SerializeField] float _forwardSpeed;
-    [SerializeField] float _riseSpeed;
+    [SerializeField, Header("ズームの速さ")] float _forwardSpeed;
+    [SerializeField, Header("垂直ドラッグの速さ")] float _riseSpeed;
 
     void Start()
     {
-        _virtualCamera = GetComponent<CinemachineVirtualCamera>();
-        _orbitalTransposer = _virtualCamera.GetComponentInChildren<CinemachineOrbitalTransposer>();
+        _freeLookCamera = GetComponent<CinemachineFreeLook>();
+        _orbitalTransposer = _freeLookCamera.GetComponentInChildren<CinemachineOrbitalTransposer>();
+        _orbitalTransposer.m_XAxis.Value = 0;
     }
 
     void Update()
@@ -29,8 +30,9 @@ public class CameraContoroller : MonoBehaviour
     private void ForwardViewPoint()
     {
         // マウスホイールの回転値を変数 scroll に渡す
-        float scroll = Input.GetAxis("Mouse ScrollWheel");
-        Vector3 offset = _virtualCamera.transform.forward * scroll * _forwardSpeed;
+        float inputMouseScroll = Input.GetAxis("Mouse ScrollWheel");
+
+        Vector3 offset = _freeLookCamera.transform.forward * inputMouseScroll * _forwardSpeed;
         _orbitalTransposer.m_FollowOffset -= offset;
     }
 
