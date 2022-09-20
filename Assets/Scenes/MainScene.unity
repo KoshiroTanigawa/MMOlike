@@ -1061,7 +1061,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 127820386}
-  m_LocalRotation: {x: -0.04126668, y: -0.0000000071423045, z: 0.0000000013461232, w: 0.9991482}
+  m_LocalRotation: {x: -0.04126668, y: 0.0000000071422903, z: -0.0000000013461037, w: 0.9991482}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.0099999, y: 1.01, z: 1.0099999}
   m_ConstrainProportionsScale: 0
@@ -2858,7 +2858,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 527850408}
-  m_LocalRotation: {x: -0.0000000372529, y: -0.00000004562839, z: 0.000000010566424, w: 1}
+  m_LocalRotation: {x: -0.0000000372529, y: 0.00000004562849, z: -0.000000010566434, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.0099999, y: 1.01, z: 1.0099999}
   m_ConstrainProportionsScale: 0
@@ -5153,7 +5153,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.11353673, y: -0.00000019223023, z: 0.000000021967226, w: 0.99353385}
+  m_LocalRotation: {x: 0.11353673, y: -0.00000012685615, z: 0.000000014496562, w: 0.99353385}
   m_LocalPosition: {x: 3.737833, y: 33.136616, z: 46.849342}
   m_LocalScale: {x: 0.99009913, y: 0.9900991, z: 0.99009925}
   m_ConstrainProportionsScale: 0
@@ -5605,6 +5605,9 @@ MonoBehaviour:
   _speed: 10
   _jumpForce: 5
   _gravityScale: 1.5
+  _playerName: 
+  _playerMaxHp: 0
+  _playerMaxMp: 0
   _maxRotationSpeed: 50
 --- !u!4 &1035039978 stripped
 Transform:
@@ -8463,10 +8466,10 @@ MonoBehaviour:
   _enemyHPText: {fileID: 1369806962}
   _enemyRedHPBar: {fileID: 482170077}
   _enemyGrayHPBar: {fileID: 1946510111}
-  _menu: {fileID: 835582956}
-  _exitButton: {fileID: 0}
-  _restartButton: {fileID: 0}
-  _backButton: {fileID: 0}
+  _menu: {fileID: 835582954}
+  _exitButton: {fileID: 116445623}
+  _restartButton: {fileID: 1324423408}
+  _backButton: {fileID: 843830015}
   _logText: {fileID: 127113486}
 --- !u!114 &1525036457
 MonoBehaviour:
@@ -9135,7 +9138,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Continuous recovery HP
 
-    RT : 30 sec'
+    RT : 30 sec  MP : 30'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -11285,7 +11288,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2056731750}
-  m_LocalRotation: {x: -0.047565788, y: 0.0041692625, z: -0.00075859245, w: 0.9988591}
+  m_LocalRotation: {x: -0.047565788, y: 0.004169327, z: -0.00075860426, w: 0.9988591}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.0099999, y: 1.01, z: 1.0099999}
   m_ConstrainProportionsScale: 0
@@ -11764,7 +11767,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6967270828104456373, guid: 45f16d591ddac304a867ebf399c8b648, type: 3}
       propertyPath: m_Name
-      value: Enemy_Skelton
+      value: Enemy
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 45f16d591ddac304a867ebf399c8b648, type: 3}

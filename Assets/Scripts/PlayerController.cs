@@ -11,6 +11,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField, Header("ジャンプ力"), Tooltip("キャラクターのジャンプ力のためのメンバー変数")] float _jumpForce = 1.0f;
     [SerializeField ,Header("重力の大きさ（倍率）"), Tooltip("重力の大きさのためのメンバー変数")] float _gravityScale = 1.5f;
 
+    //プレイヤーのステータス関連
+    [SerializeField, Header("キャラクター名"), Tooltip("キャラクター名のためのメンバー変数")] string _playerName;
+    [SerializeField, Header("MaxHP"), Tooltip("MaxHPのためのメンバー変数")] int _playerMaxHp;
+    [SerializeField, Header("MaxMP"), Tooltip("MaxMPのためのメンバー変数")] int _playerMaxMp;
+    int _currentPlayerHp;
+    int _currentPlayerMp;
+    public int PlayerHP { get => _currentPlayerHp; set => _currentPlayerHp = value; }
+    public int PlayerMP { get => _currentPlayerMp; set => _currentPlayerMp = value; }
+
     // 
     Quaternion _targetRotation;
     [SerializeField, Header("回転制限")] float _maxRotationSpeed;
@@ -21,13 +30,17 @@ public class PlayerController : MonoBehaviour
     [Tooltip("キャラクターが攻撃可能か判定するフラグ")] bool _isAttack;
 
     // アニメーション関連 //
-    Animator _anim;
+    Animator _playerAnim;
 
 
     void Start()
     {
         _playerRb = GetComponent<Rigidbody>();
-        _anim = GetComponent<Animator>();
+        _playerAnim = GetComponent<Animator>();
+
+        //ステータス初期化
+        PlayerHP = _playerMaxHp;
+        PlayerMP = _playerMaxMp;
 
         //重力変更
         Physics.gravity = new Vector3(0, Physics.gravity.y *_gravityScale, 0);
@@ -48,7 +61,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space) && _onGround)
         {
-            _anim.SetBool("isJumping", true);
+            _playerAnim.SetBool("isJumping", true);
             _playerRb.AddForce(0, _jumpForce, 0, ForceMode.Impulse);
             _onGround = false;
             _isMoving = false;
@@ -88,7 +101,7 @@ public class PlayerController : MonoBehaviour
         {
             _onGround = true;
             _isMoving = true;
-            _anim.SetBool("isJumping", false);
+            _playerAnim.SetBool("isJumping", false);
         }
     }
 }
