@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SkillBase : MonoBehaviour
 {
+    GameObject _manager;
     GameObject _player;
     GameObject _enemy;
     PlayerController _playerController;

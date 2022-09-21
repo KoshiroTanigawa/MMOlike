@@ -17,7 +17,6 @@ public class UIManager : MonoBehaviour
     [Header("エネミー名のUI"), Tooltip("エネミー名のテキストを入れる")] public TextMeshProUGUI _enemyNameText;
     [Header("エネミーHPのUI"), Tooltip("エネミーHPのテキストを入れる")] public TextMeshProUGUI _enemyHPText;
     [Header("エネミーHPバー（赤）のUI"), Tooltip("エネミーHPバー（赤）のテキストを入れる")] public Image _enemyRedHPBar;
-    [Header("エネミーHPバー（灰）のUI"), Tooltip("エネミーHPバー（灰）のテキストを入れる")] public Image _enemyGrayHPBar;
 
     //PauseMenu 関連
     [Tooltip("Menuを開いているかのフラグ")] bool _onMenu;
@@ -30,23 +29,63 @@ public class UIManager : MonoBehaviour
     [Header("LogのUI"), Tooltip("Logのテキストを入れる")] public TextMeshProUGUI _logText;
 
     //Skill&Item関連
+    //リキャスト中に表示するオブジェクト
+    [SerializeField] GameObject _recastingSkill1;
+    [SerializeField] GameObject _recastingSkill2;
+    [SerializeField] GameObject _recastingSkill3;
+    [SerializeField] GameObject _recastingSkill4;
+    [SerializeField] GameObject _recastingItem1;
+    [SerializeField] GameObject _recastingItem2;
+    [SerializeField] GameObject _recastingItem3;
+    //リキャストタイムのテキスト
+    [SerializeField] TextMeshProUGUI _rtText1;
+    [SerializeField] TextMeshProUGUI _rtText2;
+    [SerializeField] TextMeshProUGUI _rtText3;
+    [SerializeField] TextMeshProUGUI _rtText4;
+    [SerializeField] TextMeshProUGUI _rtText5;
+    [SerializeField] TextMeshProUGUI _rtText6;
+    [SerializeField] TextMeshProUGUI _rtText7;
+    //Skillフラグ
     bool _onSkill1;
     bool _onSkill2;
     bool _onSkill3;
     bool _onSkill4;
+    //Itemフラグ
     bool _onItem1;
     bool _onItem2;
     bool _onItem3;
+    //Skill&Itemのリキャスト時間のための変数
+    [SerializeField] int _rt1;
+    [SerializeField] int _rt2;
+    [SerializeField] int _rt3;
+    [SerializeField] int _rt4;
+    [SerializeField] int _rt5;
+    [SerializeField] int _rt6;
+    [SerializeField] int _rt7;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        //PauseMenu Off
         _menu.SetActive(false);
+
+        //リキャスト中に表示するオブジェクト Off
+        _recastingSkill1.SetActive(false);
+        _recastingSkill2.SetActive(false);
+        _recastingSkill3.SetActive(false);
+        _recastingSkill4.SetActive(false);
+        _recastingItem1.SetActive(false);
+        _recastingItem2.SetActive(false);
+        _recastingItem3.SetActive(false);
+
+        //Skillを使える状態にする
         _onSkill1 = true;
         _onSkill2 = true;
         _onSkill3 = true;
         _onSkill4 = true;
+
+        //Itemを使える状態にする
         _onItem1 = true;
         _onItem2 = true;
         _onItem3 = true;
@@ -56,10 +95,11 @@ public class UIManager : MonoBehaviour
     void Update()
     {
         InputEscape();
+        UseSkill();
     }
 
     /// <summary> Escapeボタン入力時の処理/// </summary>
-    public void InputEscape()
+    void InputEscape()
     {
         if (Input.GetKeyDown(KeyCode.Escape) && !_onMenu)
         {
@@ -73,8 +113,29 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void OnRcastingSkill() 
+    void UseSkill()
     {
-       
-    } 
+        if (Input.GetKeyDown(KeyCode.Alpha1) && _onSkill1) 
+        {
+            //Skillを使えない状態にする
+            _onSkill1 = false;
+
+            // //リキャスト中に表示するオブジェクト On
+            _recastingSkill1.SetActive(true);
+
+            //リキャスト時間をセット
+            _rtText1.text = _rt1.ToString();
+
+            //リキャスト時間分だけカウントダウン
+            _rtText1.DOCounter(_rt1, 0, _rt1)
+                    .SetEase(Ease.Linear)
+                    .SetDelay(0.5f)
+                    .OnComplete(() =>
+                    {
+                        _onSkill1 = true;
+                        _recastingSkill1.SetActive(false);
+                    });
+        }
+
+    }
 }
