@@ -1196,7 +1196,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 127820386}
-  m_LocalRotation: {x: -0.04126668, y: 0.0000000071422903, z: -0.0000000013461037, w: 0.9991482}
+  m_LocalRotation: {x: -0.041266672, y: 0.0000000071422903, z: -0.0000000013461037, w: 0.9991482}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.0099999, y: 1.01, z: 1.0099999}
   m_ConstrainProportionsScale: 0
@@ -3285,7 +3285,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4532250632830336, guid: 60e8218091f83244c9bf9c8c2569a009, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 4532250632830336, guid: 60e8218091f83244c9bf9c8c2569a009, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4094,7 +4094,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &725609083
 GameObject:
@@ -4469,7 +4469,7 @@ RectTransform:
   - {fileID: 1071730578}
   - {fileID: 835582955}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -5568,7 +5568,7 @@ Transform:
   - {fileID: 527850410}
   - {fileID: 127820388}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 21.83, y: 0, z: 0}
 --- !u!114 &963194229
 MonoBehaviour:
@@ -6145,9 +6145,9 @@ MonoBehaviour:
   _speed: 10
   _jumpForce: 5
   _gravityScale: 1.5
-  _playerName: 
-  _playerMaxHp: 0
-  _playerMaxMp: 0
+  _playerName: Koshiro
+  _playerMaxHp: 200
+  _playerMaxMp: 100
   _maxRotationSpeed: 50
 --- !u!4 &1035039978 stripped
 Transform:
@@ -9258,7 +9258,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1525036456
 MonoBehaviour:
@@ -9272,9 +9272,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 838066b48f667c64d8d8fedd637e47f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerName: Koshiro
   _playerNameText: {fileID: 34661753}
   _playerHPText: {fileID: 1565681741}
   _playerMPText: {fileID: 725609085}
+  _enemyName: Skelton
   _enemyNameText: {fileID: 1582528736}
   _enemyHPText: {fileID: 1369806962}
   _enemyRedHPBar: {fileID: 482170077}
@@ -12259,7 +12261,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2056731750}
-  m_LocalRotation: {x: -0.047565788, y: 0.004169327, z: -0.00075860426, w: 0.9988591}
+  m_LocalRotation: {x: -0.047565803, y: 0.0041725775, z: -0.0007591956, w: 0.9988591}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.0099999, y: 1.01, z: 1.0099999}
   m_ConstrainProportionsScale: 0
@@ -12695,7 +12697,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6963960578740316425, guid: 45f16d591ddac304a867ebf399c8b648, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6963960578740316425, guid: 45f16d591ddac304a867ebf399c8b648, type: 3}
       propertyPath: m_LocalPosition.x
@@ -12740,6 +12742,10 @@ PrefabInstance:
     - target: {fileID: 6967270828104456373, guid: 45f16d591ddac304a867ebf399c8b648, type: 3}
       propertyPath: m_Name
       value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 9216987903819959728, guid: 45f16d591ddac304a867ebf399c8b648, type: 3}
+      propertyPath: _enemyMaxHp
+      value: 500
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 45f16d591ddac304a867ebf399c8b648, type: 3}
@@ -13172,7 +13178,7 @@ Transform:
   - {fileID: 1148227805}
   - {fileID: 954751031}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2132805773290546667
 PrefabInstance:

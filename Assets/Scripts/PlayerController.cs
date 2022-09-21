@@ -13,16 +13,15 @@ public class PlayerController : MonoBehaviour
 
     //プレイヤーのステータス関連
     [SerializeField, Header("キャラクター名"), Tooltip("キャラクター名のためのメンバー変数")] string _playerName;
-    [SerializeField, Header("MaxHP"), Tooltip("MaxHPのためのメンバー変数")] int _playerMaxHp;
-    [SerializeField, Header("MaxMP"), Tooltip("MaxMPのためのメンバー変数")] int _playerMaxMp;
+    [Header("MaxHP"), Tooltip("MaxHPのためのメンバー変数")] public int _playerMaxHp;
+    [Header("MaxMP"), Tooltip("MaxMPのためのメンバー変数")] public int _playerMaxMp;
     int _currentPlayerHp;
     int _currentPlayerMp;
-    public int PlayerHP { get => _currentPlayerHp; set => _currentPlayerHp = value; }
-    public int PlayerMP { get => _currentPlayerMp; set => _currentPlayerMp = value; }
+    //プレイヤーステータスのプロパティ、外部からは読み取りのみ
+    public string PlayerName { get => _playerName; private set => _playerName = value; }
+    public int PlayerHP { get => _currentPlayerHp; private set => _currentPlayerHp = value; }
+    public int PlayerMP { get => _currentPlayerMp; private set => _currentPlayerMp = value; }
 
-    // 
-    Quaternion _targetRotation;
-    [SerializeField, Header("回転制限")] float _maxRotationSpeed;
 
     // フラグ判定 //
     [Tooltip("キャラクターが地面に接地しているかのフラグ")] bool _onGround;
@@ -103,5 +102,10 @@ public class PlayerController : MonoBehaviour
             _isMoving = true;
             _playerAnim.SetBool("isJumping", false);
         }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        
     }
 }

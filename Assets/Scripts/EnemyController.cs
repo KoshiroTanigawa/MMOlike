@@ -12,10 +12,11 @@ public class EnemyController : MonoBehaviour
 
     //enemyのステータス関連
     [SerializeField, Header("Enemy名"), Tooltip("Enemy名のためのメンバー変数")] string _enemyName;
-    [SerializeField, Header("MaxHP"), Tooltip("MaxHPのためのメンバー変数")] int _enemyMaxHp;
-    
+    [Header("MaxHP"), Tooltip("MaxHPのためのメンバー変数")] public int _enemyMaxHp;
     int _currentEnemyHp;
-    public int EnemyHP { get => _currentEnemyHp; set => _currentEnemyHp = value; }
+    //Enemyステータスのプロパティ、外部からは読み取りのみ
+    public string EnemyName { get => _enemyName; private set => _enemyName = value; }
+    public int EnemyHP { get => _currentEnemyHp; private set => _currentEnemyHp = value; }
     
     // アニメーション関連 //
     Animator _enemyAnim;
@@ -32,6 +33,10 @@ public class EnemyController : MonoBehaviour
 
     // Update is called once per frame
     void Update()
+    {
+        
+    }
+    private void OnTriggerEnter(Collider other)
     {
         
     }

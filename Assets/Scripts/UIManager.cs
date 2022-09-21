@@ -9,11 +9,15 @@ using DG.Tweening;
 public class UIManager : MonoBehaviour
 {
     //Player 関連
+    GameObject _player;
+    PlayerController _playerController;
     [Header("プレイヤー名のUI"), Tooltip("プレイヤー名のテキストを入れる")] public TextMeshProUGUI _playerNameText;
     [Header("プレイヤーHPのUI"), Tooltip("プレイヤーHPのテキストを入れる")] public TextMeshProUGUI _playerHPText;
     [Header("プレイヤーMPのUI"), Tooltip("プレイヤーMPのテキストを入れる")] public TextMeshProUGUI _playerMPText;
 
     //Enemy 関連
+    GameObject _enemy;
+    EnemyController _enemyController;
     [Header("エネミー名のUI"), Tooltip("エネミー名のテキストを入れる")] public TextMeshProUGUI _enemyNameText;
     [Header("エネミーHPのUI"), Tooltip("エネミーHPのテキストを入れる")] public TextMeshProUGUI _enemyHPText;
     [Header("エネミーHPバー（赤）のUI"), Tooltip("エネミーHPバー（赤）のテキストを入れる")] public Image _enemyRedHPBar;
@@ -67,6 +71,23 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //プレイヤー関連の参照取得
+        _player = GameObject.Find("Player");
+        _playerController = _player.GetComponent<PlayerController>();
+
+        //エネミー関連の参照取得
+        _enemy = GameObject.Find("Enemy");
+        _enemyController = _enemy.GetComponent<EnemyController>();
+
+        //ステータスの初期化
+        //プレイヤー
+        _playerNameText.text = _playerController.PlayerName;
+        _playerHPText.text = "HP : " + _playerController.PlayerHP.ToString() + " / " + _playerController._playerMaxHp.ToString();
+        _playerMPText.text = "MP : " + _playerController.PlayerMP.ToString() + " / " + _playerController._playerMaxMp.ToString();
+        //エネミー
+        _enemyNameText.text = _enemyController.EnemyName;
+        _enemyHPText.text = _enemyController.EnemyHP.ToString() + " / " + _enemyController._enemyMaxHp.ToString();
+
         //PauseMenu Off
         _menu.SetActive(false);
 
@@ -115,6 +136,7 @@ public class UIManager : MonoBehaviour
 
     void UseSkill()
     {
+        //Skill1についての処理
         if (Input.GetKeyDown(KeyCode.Alpha1) && _onSkill1) 
         {
             //Skillを使えない状態にする
@@ -136,6 +158,142 @@ public class UIManager : MonoBehaviour
                         _recastingSkill1.SetActive(false);
                     });
         }
+        //Skill2についての処理
+        if(Input.GetKeyDown(KeyCode.Alpha2) && _onSkill2) 
+        {
+            //Skillを使えない状態にする
+            _onSkill2 = false;
+
+            // //リキャスト中に表示するオブジェクト On
+            _recastingSkill2.SetActive(true);
+
+            //リキャスト時間をセット
+            _rtText2.text = _rt2.ToString();
+
+            //リキャスト時間分だけカウントダウン
+            _rtText2.DOCounter(_rt2, 0, _rt2)
+                    .SetEase(Ease.Linear)
+                    .SetDelay(0.5f)
+                    .OnComplete(() =>
+                    {
+                        _onSkill2 = true;
+                        _recastingSkill2.SetActive(false);
+                    });
+        }
+        //Skill3についての処理
+        if (Input.GetKeyDown(KeyCode.Alpha3) && _onSkill3)
+        {
+            //Skillを使えない状態にする
+            _onSkill3 = false;
+
+            // //リキャスト中に表示するオブジェクト On
+            _recastingSkill3.SetActive(true);
+
+            //リキャスト時間をセット
+            _rtText3.text = _rt3.ToString();
+
+            //リキャスト時間分だけカウントダウン
+            _rtText3.DOCounter(_rt3, 0, _rt3)
+                    .SetEase(Ease.Linear)
+                    .SetDelay(0.5f)
+                    .OnComplete(() =>
+                    {
+                        _onSkill3 = true;
+                        _recastingSkill3.SetActive(false);
+                    });
+        }
+        //Skill4についての処理
+        if (Input.GetKeyDown(KeyCode.Alpha4) && _onSkill4)
+        {
+            //Skillを使えない状態にする
+            _onSkill4 = false;
+
+            // //リキャスト中に表示するオブジェクト On
+            _recastingSkill4.SetActive(true);
+
+            //リキャスト時間をセット
+            _rtText4.text = _rt4.ToString();
+
+            //リキャスト時間分だけカウントダウン
+            _rtText4.DOCounter(_rt4, 0, _rt4)
+                    .SetEase(Ease.Linear)
+                    .SetDelay(0.5f)
+                    .OnComplete(() =>
+                    {
+                        _onSkill4 = true;
+                        _recastingSkill4.SetActive(false);
+                    });
+        }
+
+        //Item1についての処理
+        if (Input.GetKeyDown(KeyCode.Q) && _onItem1)
+        {
+            //Skillを使えない状態にする
+            _onItem1 = false;
+
+            // //リキャスト中に表示するオブジェクト On
+            _recastingItem1.SetActive(true);
+
+            //リキャスト時間をセット
+            _rtText5.text = _rt5.ToString();
+
+            //リキャスト時間分だけカウントダウン
+            _rtText5.DOCounter(_rt5, 0, _rt5)
+                    .SetEase(Ease.Linear)
+                    .SetDelay(0.5f)
+                    .OnComplete(() =>
+                    {
+                        _onItem1 = true;
+                        _recastingItem1.SetActive(false);
+                    });
+        }
+        //Item2についての処理
+        if (Input.GetKeyDown(KeyCode.E) && _onItem2)
+        {
+            //Skillを使えない状態にする
+            _onItem2 = false;
+
+            // //リキャスト中に表示するオブジェクト On
+            _recastingItem2.SetActive(true);
+
+            //リキャスト時間をセット
+            _rtText6.text = _rt6.ToString();
+
+            //リキャスト時間分だけカウントダウン
+            _rtText6.DOCounter(_rt6, 0, _rt6)
+                    .SetEase(Ease.Linear)
+                    .SetDelay(0.5f)
+                    .OnComplete(() =>
+                    {
+                        _onItem2 = true;
+                        _recastingItem2.SetActive(false);
+                    });
+        }
+        //Item3についての処理
+        if (Input.GetKeyDown(KeyCode.R) && _onItem3)
+        {
+            //Skillを使えない状態にする
+            _onItem3 = false;
+
+            // //リキャスト中に表示するオブジェクト On
+            _recastingItem3.SetActive(true);
+
+            //リキャスト時間をセット
+            _rtText7.text = _rt7.ToString();
+
+            //リキャスト時間分だけカウントダウン
+            _rtText7.DOCounter(_rt7, 0, _rt7)
+                    .SetEase(Ease.Linear)
+                    .SetDelay(0.5f)
+                    .OnComplete(() =>
+                    {
+                        _onItem3 = true;
+                        _recastingItem3.SetActive(false);
+                    });
+        }
+    }
+    public void EnemyHPBar() 
+    {
 
     }
 }
