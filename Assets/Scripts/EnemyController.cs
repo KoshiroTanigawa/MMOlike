@@ -34,8 +34,43 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        EnemyMove();
+        EnemyAttack();
+        Hit();
     }
+
+    /// <summary>
+    /// Enemy‚ÌˆÚ“®‚Ìˆ—
+    /// </summary>
+    void EnemyMove() 
+    {
+
+    }
+
+    /// <summary>
+    /// Enemy‚ÌUŒ‚‚Ìˆ—
+    /// </summary>
+    void EnemyAttack() 
+    {
+
+    }
+
+    /// <summary>
+    /// UŒ‚ó‚¯‚½‚Ìˆ—
+    /// </summary>
+    void Hit()
+    {
+
+    }
+
+    bool EnemyDie() 
+    {
+        if (EnemyHP == 0)
+            return true;
+        else
+            return false;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         

@@ -30,7 +30,9 @@ public class UIManager : MonoBehaviour
     [SerializeField, Header("BackボタンのUI"), Tooltip("Backボタンを入れる")] GameObject _backButton;
 
     //Log 関連
-    [Header("LogのUI"), Tooltip("Logのテキストを入れる")] public TextMeshProUGUI _logText;
+    [SerializeField, Header("LogのUI"), Tooltip("LogWindowを入れる")] GameObject _logWindow;
+    [SerializeField, Header("LogのText"), Tooltip("LogTextを入れる")] Text _logText;
+    int _lineCount;
 
     //Skill&Item関連
     //リキャスト中に表示するオブジェクト
@@ -49,15 +51,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI _rtText5;
     [SerializeField] TextMeshProUGUI _rtText6;
     [SerializeField] TextMeshProUGUI _rtText7;
-    //Skillフラグ
-    bool _onSkill1;
-    bool _onSkill2;
-    bool _onSkill3;
-    bool _onSkill4;
-    //Itemフラグ
-    bool _onItem1;
-    bool _onItem2;
-    bool _onItem3;
+  
     //Skill&Itemのリキャスト時間のための変数
     [SerializeField] int _rt1;
     [SerializeField] int _rt2;
@@ -100,23 +94,19 @@ public class UIManager : MonoBehaviour
         _recastingItem2.SetActive(false);
         _recastingItem3.SetActive(false);
 
-        //Skillを使える状態にする
-        _onSkill1 = true;
-        _onSkill2 = true;
-        _onSkill3 = true;
-        _onSkill4 = true;
-
-        //Itemを使える状態にする
-        _onItem1 = true;
-        _onItem2 = true;
-        _onItem3 = true;
+        //Log関連
+        //LogTextの初期化
+        _logText.text = "";
+        //行数カウンターの初期化
+        _lineCount = 0;
+ 
     }
 
     // Update is called once per frame
     void Update()
     {
         InputEscape();
-        UseSkill();
+        SkillTimer();
     }
 
     /// <summary> Escapeボタン入力時の処理/// </summary>
@@ -134,13 +124,16 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    void UseSkill()
+    void SkillTimer()
     {
         //Skill1についての処理
-        if (Input.GetKeyDown(KeyCode.Alpha1) && _onSkill1) 
+        if (Input.GetKeyDown(KeyCode.Alpha1) && _playerController.OnSkill1) 
         {
+            //Logに表示
+            LogOutPut(" " + _playerController.PlayerName + "の -Skill1-");
+
             //Skillを使えない状態にする
-            _onSkill1 = false;
+            _playerController.OnSkill1 = false;
 
             // //リキャスト中に表示するオブジェクト On
             _recastingSkill1.SetActive(true);
@@ -154,15 +147,18 @@ public class UIManager : MonoBehaviour
                     .SetDelay(0.5f)
                     .OnComplete(() =>
                     {
-                        _onSkill1 = true;
+                        _playerController.OnSkill1 = true;
                         _recastingSkill1.SetActive(false);
                     });
         }
         //Skill2についての処理
-        if(Input.GetKeyDown(KeyCode.Alpha2) && _onSkill2) 
+        if(Input.GetKeyDown(KeyCode.Alpha2) && _playerController.OnSkill2) 
         {
+            //Logに表示
+            LogOutPut(" " + _playerController.PlayerName + "の -Skill2-");
+
             //Skillを使えない状態にする
-            _onSkill2 = false;
+            _playerController.OnSkill2 = false;
 
             // //リキャスト中に表示するオブジェクト On
             _recastingSkill2.SetActive(true);
@@ -176,15 +172,18 @@ public class UIManager : MonoBehaviour
                     .SetDelay(0.5f)
                     .OnComplete(() =>
                     {
-                        _onSkill2 = true;
+                        _playerController.OnSkill2 = true;
                         _recastingSkill2.SetActive(false);
                     });
         }
         //Skill3についての処理
-        if (Input.GetKeyDown(KeyCode.Alpha3) && _onSkill3)
+        if (Input.GetKeyDown(KeyCode.Alpha3) && _playerController.OnSkill3)
         {
+            //Logに表示
+            LogOutPut(" " + _playerController.PlayerName + "の -Skill3-");
+
             //Skillを使えない状態にする
-            _onSkill3 = false;
+            _playerController.OnSkill3 = false;
 
             // //リキャスト中に表示するオブジェクト On
             _recastingSkill3.SetActive(true);
@@ -198,15 +197,18 @@ public class UIManager : MonoBehaviour
                     .SetDelay(0.5f)
                     .OnComplete(() =>
                     {
-                        _onSkill3 = true;
+                        _playerController.OnSkill3 = true;
                         _recastingSkill3.SetActive(false);
                     });
         }
         //Skill4についての処理
-        if (Input.GetKeyDown(KeyCode.Alpha4) && _onSkill4)
+        if (Input.GetKeyDown(KeyCode.Alpha4) && _playerController.OnSkill4)
         {
+            //Logに表示
+            LogOutPut(" " + _playerController.PlayerName + "の -Skill4-");
+
             //Skillを使えない状態にする
-            _onSkill4 = false;
+            _playerController.OnSkill4 = false;
 
             // //リキャスト中に表示するオブジェクト On
             _recastingSkill4.SetActive(true);
@@ -220,16 +222,19 @@ public class UIManager : MonoBehaviour
                     .SetDelay(0.5f)
                     .OnComplete(() =>
                     {
-                        _onSkill4 = true;
+                        _playerController.OnSkill4 = true;
                         _recastingSkill4.SetActive(false);
                     });
         }
 
         //Item1についての処理
-        if (Input.GetKeyDown(KeyCode.Q) && _onItem1)
+        if (Input.GetKeyDown(KeyCode.Q) && _playerController.OnItem1)
         {
+            //Logに表示
+            LogOutPut(" " + _playerController.PlayerName + "の -Item1-");
+
             //Skillを使えない状態にする
-            _onItem1 = false;
+            _playerController.OnItem1 = false;
 
             // //リキャスト中に表示するオブジェクト On
             _recastingItem1.SetActive(true);
@@ -243,15 +248,18 @@ public class UIManager : MonoBehaviour
                     .SetDelay(0.5f)
                     .OnComplete(() =>
                     {
-                        _onItem1 = true;
+                        _playerController.OnItem1 = true;
                         _recastingItem1.SetActive(false);
                     });
         }
         //Item2についての処理
-        if (Input.GetKeyDown(KeyCode.E) && _onItem2)
+        if (Input.GetKeyDown(KeyCode.E) && _playerController.OnItem2)
         {
+            //Logに表示
+            LogOutPut(" " + _playerController.PlayerName + "の -Item2-");
+
             //Skillを使えない状態にする
-            _onItem2 = false;
+            _playerController.OnItem2 = false;
 
             // //リキャスト中に表示するオブジェクト On
             _recastingItem2.SetActive(true);
@@ -265,15 +273,18 @@ public class UIManager : MonoBehaviour
                     .SetDelay(0.5f)
                     .OnComplete(() =>
                     {
-                        _onItem2 = true;
+                        _playerController.OnItem2 = true;
                         _recastingItem2.SetActive(false);
                     });
         }
         //Item3についての処理
-        if (Input.GetKeyDown(KeyCode.R) && _onItem3)
+        if (Input.GetKeyDown(KeyCode.R) && _playerController.OnItem3)
         {
+            //Logに表示
+            LogOutPut(" " + _playerController.PlayerName + "の -Item3-");
+
             //Skillを使えない状態にする
-            _onItem3 = false;
+            _playerController.OnItem3 = false;
 
             // //リキャスト中に表示するオブジェクト On
             _recastingItem3.SetActive(true);
@@ -287,11 +298,25 @@ public class UIManager : MonoBehaviour
                     .SetDelay(0.5f)
                     .OnComplete(() =>
                     {
-                        _onItem3 = true;
+                        _playerController.OnItem3 = true;
                         _recastingItem3.SetActive(false);
                     });
         }
     }
+
+    void LogOutPut(string logstr)
+    {
+        _logText.text += logstr;
+        _logText.text += "\n";
+        _lineCount += 1;
+        // 常にTextの最下部（最新）を表示するように強制スクロール
+        _logWindow.GetComponent<ScrollRect>().verticalNormalizedPosition = 0;
+
+        //最大行数以上で初期化 ここでは50行
+        if (_lineCount > 50)
+            _logText.text = "";
+    }
+
     public void EnemyHPBar() 
     {
 
