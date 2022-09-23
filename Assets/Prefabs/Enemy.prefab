@@ -551,7 +551,7 @@ GameObject:
   - component: {fileID: 8529109353464116306}
   m_Layer: 0
   m_Name: SWORD
-  m_TagString: Untagged
+  m_TagString: EnemySword
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1232,6 +1232,8 @@ GameObject:
   - component: {fileID: 840155832190685458}
   - component: {fileID: 2018224106371412550}
   - component: {fileID: 699230497481924195}
+  - component: {fileID: 1323139371287721281}
+  - component: {fileID: 1323139371287721282}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -1247,7 +1249,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1652201091491613542}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 3.36, y: 30.94, z: 60.16}
+  m_LocalPosition: {x: 13.04, y: 30.94, z: 67.44}
   m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1287,8 +1289,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3.4816241, y: 7.1206775, z: 2.104403}
-  m_Center: {x: -0.037620068, y: 3.0603392, z: -0.08900324}
+  m_Size: {x: 3.4816241, y: 6.6242194, z: 2.104403}
+  m_Center: {x: -0.037620068, y: 3.3085682, z: -0.08900324}
 --- !u!54 &2018224106371412550
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1303,8 +1305,8 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  m_Constraints: 80
+  m_CollisionDetection: 2
 --- !u!114 &699230497481924195
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1318,9 +1320,45 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _particleSword: {fileID: 1878692521342294628}
-  _speed: 1
+  _speed: 1.5
   _enemyName: Skelton
   _enemyMaxHp: 1000
+  target: {fileID: 0}
+--- !u!195 &1323139371287721281
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1652201091491613542}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!65 &1323139371287721282
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1652201091491613542}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3.4816241, y: 6.6242194, z: 2.104403}
+  m_Center: {x: -0.037620068, y: 3.3085682, z: -0.08900324}
 --- !u!1 &1652203800669631260
 GameObject:
   m_ObjectHideFlags: 0

@@ -31,7 +31,13 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (_enemyController.EnemyDie())
+        {
+            SceneManager.LoadScene("");
+        }
+        else if (_playerController.PlayerDie()) 
+        {
+            SceneManager.LoadScene("");
+        }
     }
-
 }

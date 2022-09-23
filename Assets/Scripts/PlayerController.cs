@@ -8,32 +8,20 @@ public class PlayerController : MonoBehaviour
     // 使用するコンポーネント //
     Rigidbody _playerRb;
     [SerializeField, Header("剣の軌道")] GameObject _particleSword;
-    [SerializeField] Collider _swordCollider;
+    [SerializeField] GameObject _swordCollider;
 
     //アニメーション関連
     Animator _playerAnim;
-    PlayerState _state;
-    enum PlayerState
-    {
-        Idol,
-        Run,
-        Jump,
-        Skill1,
-        Skill2,
-        Skill3,
-        Skill4,
-        GetUp,
-        Fall,
-        Hit
-    }
+
+    //敵
+    EnemyController _enemy;
 
     // 動きに関する変数 //
-    float inputVertical;
-    float inputHorizontal;
-    [SerializeField, Header("移動速度"),Tooltip("キャラクターの移動速度のためのメンバー変数")] float _speed = 1.0f;
+    float _inputVertical;
+    float _inputHorizontal;
+    [SerializeField, Header("移動速度"),Tooltip("キャラクターの移動速度のためのメンバー変数")] float _speed;
     [SerializeField, Header("ジャンプ力"), Tooltip("キャラクターのジャンプ力のためのメンバー変数")] float _jumpForce = 1.0f;
     [SerializeField ,Header("重力の大きさ（倍率）"), Tooltip("重力の大きさのためのメンバー変数")] float _gravityScale = 1.5f;
-    [SerializeField, Header("ターン速度（倍率）"), Tooltip("ターン速度のためのメンバー変数")] float _turn = 2f;
 
     //プレイヤーのステータス関連
     [SerializeField, Header("キャラクター名"), Tooltip("キャラクター名のためのメンバー変数")] string _playerName;
@@ -48,7 +36,7 @@ public class PlayerController : MonoBehaviour
     {
         get => _currentPlayerHp;
 
-        private set 
+         set 
         {
             _currentPlayerHp = value;
             if (_currentPlayerHp > _playerMaxHp)
@@ -61,7 +49,7 @@ public class PlayerController : MonoBehaviour
     { 
         get => _currentPlayerMp;
 
-        private set 
+         set 
         {
             _currentPlayerMp = value;
             if (_currentPlayerMp > _playerMaxMp)
@@ -77,6 +65,8 @@ public class PlayerController : MonoBehaviour
     bool _onSkill2;
     bool _onSkill3;
     bool _onSkill4;
+    //
+    public bool _gcd;
     //Skillのプロパティ
     public bool OnSkill1 { get => _onSkill1; set => _onSkill1 = value; }
     public bool OnSkill2 { get => _onSkill2; set => _onSkill2 = value; }
@@ -96,6 +86,10 @@ public class PlayerController : MonoBehaviour
     int _recastTime;
     //スキルのダメージ倍率の変数
     float _skillDamageScale = 1.0f;
+    //ダメージ用変数
+    int _playerDamage;
+    //damageプロパティ
+    public int PlayerDamage { get => _playerDamage;  set => _playerDamage = value; }
     //Skill&Itemのリキャスト時間のための変数
     [SerializeField, Header("スキル1リキャスト時間")] int _rt1;
     [SerializeField, Header("スキル2リキャスト時間")] int _rt2;
@@ -112,18 +106,19 @@ public class PlayerController : MonoBehaviour
     public int RT5 { get => _rt5; private set => _rt5 = value; }
     public int RT6 { get => _rt6; private set => _rt6 = value; }
     public int RT7 { get => _rt7; private set => _rt7 = value; }
+    //スキル用コルーチン
+    IEnumerator _corutine;
 
     //その他
     [Tooltip("キャラクターが地面に接地しているかのフラグ")] bool _onGround;
     [Tooltip("キャラクターが移動可能か判定するフラグ")] bool _isMoving;
+    [Tooltip("キャラクターがJump可能か判定するフラグ")] bool _isJumping;
 
     void Start()
     {
         _playerRb = GetComponent<Rigidbody>();
         _playerAnim = GetComponent<Animator>();
-
-        //アニメーション初期化
-        _state = PlayerState.Idol;
+        _enemy = GameObject.Find("Enemy").GetComponent<EnemyController>();
 
         //重力変更
         Physics.gravity = new Vector3(0, Physics.gravity.y * _gravityScale, 0);
@@ -135,6 +130,7 @@ public class PlayerController : MonoBehaviour
         //フラグOn
         _onGround = true;
         _isMoving = true;
+        _isJumping = true;
 
         //Skillを使える状態にする
         OnSkill1 = true;
@@ -150,15 +146,23 @@ public class PlayerController : MonoBehaviour
         //剣関連
         //剣の軌道Off
         _particleSword.SetActive(false);
-        _swordCollider.enabled = false;
+        _swordCollider.SetActive(false);
+    }
+
+    void FixedUpdate()
+    {
+        PlayerMove();
+        PlayerJump();
     }
 
     void Update()
     {
-        PlayerMove();
-        PlayerJump();
+        _inputVertical = Input.GetAxisRaw("Vertical");
+        _inputHorizontal = Input.GetAxisRaw("Horizontal");
+        
         UseSkill();
         UseItem();
+        PlayerDie();
     }
 
     /// <summary> 
@@ -166,12 +170,13 @@ public class PlayerController : MonoBehaviour
     /// /// </summary>
     void PlayerJump()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && _onGround)
+        if (Input.GetKeyDown(KeyCode.Space) && _onGround && _isJumping)
         {
-            _state = PlayerState.Jump;
+            _playerAnim.SetTrigger("Jump");
             _playerRb.AddForce(0, _jumpForce, 0, ForceMode.Impulse);
             _onGround = false;
             _isMoving = false;
+            _isJumping = false;
         }
     }
 
@@ -182,20 +187,22 @@ public class PlayerController : MonoBehaviour
     {
         if (_isMoving) 
         {
-            inputVertical = Input.GetAxisRaw("Vertical");
-            inputHorizontal = Input.GetAxisRaw("Horizontal");
+            // カメラの方向から、X-Z平面の単位ベクトルを取得
+            Vector3 cameraForward = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
 
-            Vector3 target_dir = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-            _playerRb.velocity = new Vector3(inputHorizontal, 0, inputVertical) * _speed;
-            _playerAnim.SetFloat("Run", _playerRb.velocity.magnitude);   //歩くアニメーションに切り替える
+            // 方向キーの入力値とカメラの向きから、移動方向を決定
+            Vector3 moveForward = cameraForward * _inputVertical + Camera.main.transform.right * _inputHorizontal;
 
-            if (target_dir.magnitude > 0.1)
+            // 移動方向にスピードを掛ける。ジャンプや落下がある場合は、別途Y軸方向の速度ベクトルを足す。
+            _playerRb.velocity = moveForward * _speed + new Vector3(0, _playerRb.velocity.y, 0);
+
+            // キャラクターの向きを進行方向に
+            if (moveForward != Vector3.zero)
             {
-                //キーを押し方向転換
-                Quaternion rotation = Quaternion.LookRotation(target_dir);
-                transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * _turn);
+                transform.rotation = Quaternion.LookRotation(moveForward);
             }
 
+            _playerAnim.SetFloat("Run", _playerRb.velocity.magnitude);
         }
     }
 
@@ -218,7 +225,7 @@ public class PlayerController : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Alpha4) && OnSkill4)
         {
-            Skill("Skill4", 150, true, 30, RT4);
+            Skill("Skill4", 0, true, 30, RT4);
         }
     }
 
@@ -232,47 +239,35 @@ public class PlayerController : MonoBehaviour
     void Skill(string skillName, int damage, bool healFlag, int heal, int recastTime)
     {
         //剣のCollider On
-        _swordCollider.enabled = true;
+        _swordCollider.SetActive(true);
+
+        //剣の軌跡 On
+        _particleSword.SetActive(true);
 
         //リキャスト時間セット
         _recastTime = recastTime;
         //ダメージ値セット
         damage = Mathf.FloorToInt(damage * _skillDamageScale);
+        PlayerDamage = damage;
 
         //Hp回復の処理
         if (healFlag)
         {
-            for (var i = 0; i < 3; i++)
+            _corutine = HealWaitTime(heal);
+
+            PlayerHP = PlayerHP + heal;
+            for (var i = 0; i < 2; i++)
             {
-                PlayerHP = PlayerHP + heal;
-                StartCoroutine("HealWaitTime");
+                StartCoroutine(_corutine);
             }
         }
 
         //アニメーション On
-        if (skillName == "Skill1") 
-        {
-            _state = PlayerState.Skill1;
-        }
-        //アニメーション On
-        if (skillName == "Skill2")
-        {
-            _state = PlayerState.Skill2;
-        }
-        //アニメーション On
-        if (skillName == "Skill3")
-        {
-            _state = PlayerState.Skill3;
-        }
-        //アニメーション On
-        if (skillName == "Skill4")
-        {
-            _state = PlayerState.Skill4;
-        }
+        _playerAnim.SetTrigger(skillName);
 
+        StartCoroutine("WaitCollideroff");
+        StartCoroutine("WaitTime");
     }
-        
-
 
     /// <summary>
     /// Item使用時の処理
@@ -316,6 +311,18 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+     public bool PlayerDie() 
+    {
+        if (PlayerHP == 0)
+        {
+            _playerAnim.SetBool("isDie", true);
+            _playerAnim.SetTrigger("Fall");
+            return true;
+        }
+        else
+            return false;
+    }
+
     /// <summary> 
     /// ///衝突時の処理 
     /// /// </summary>
@@ -325,33 +332,53 @@ public class PlayerController : MonoBehaviour
         {
             _onGround = true;
             _isMoving = true;
-            _playerAnim.SetBool("isJumping", false);
+
+            StartCoroutine("JumpWaitTime");
         }
     }
 
-    /*
     private void OnTriggerEnter(Collider other)
     {
-        Damager damager = other.GetComponent<Damager>();
-        if (damager != null)
+        if (other.gameObject.tag == "EnemySword") 
         {
-            _playerAnim.SetTrigger("DamageHeavy");       //プレイヤーの剣が当たったらダメージアニメーション発生
+            Debug.Log("Hit to Player");
+            PlayerHP -= _enemy.EnemyDamage;
         }
     }
-    */
 
     /// <summary>
     /// 継続回復に使う待ち時間のコルーチン
     /// </summary>
     /// <returns></returns>
-    IEnumerator HealWaitTime()
+    IEnumerator HealWaitTime(int heal)
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(2f);
+        PlayerHP += heal;
     }
 
-
-    IEnumerator AnimationWaitTime() 
+    IEnumerator JumpWaitTime()
     {
-        yield return new WaitForSeconds(_recastTime);
+        yield return new WaitForSeconds(0.5f);
+        _isJumping = true;
     }
+
+    IEnumerator WaitCollideroff() 
+    {
+        yield return new WaitForSeconds(0.5f);
+        //剣のCollider Off
+        _swordCollider.SetActive(false);
+    }
+
+    IEnumerator WaitTime()
+    {
+        yield return new WaitForSeconds(1.5f);
+        /*
+        //剣のCollider Off
+        _swordCollider.SetActive(false);
+        */
+
+        //剣の軌跡 Off
+        _particleSword.SetActive(false);
+    }
+
 }

@@ -30,7 +30,7 @@ public class UIManager : MonoBehaviour
     /*
     [SerializeField, Header("ExitボタンのUI"), Tooltip("Exitボタンを入れる")] GameObject _exitButton;
     [SerializeField, Header("RestartボタンのUI"), Tooltip("Restartボタンを入れる")] GameObject _restartButton;
-    [SerializeField, Header("BackボタンのUI"), Tooltip("Backボタンを入れる")] GameObject _backButton;
+    [SerializeField, Header("Back111114ボタンのUI"), Tooltip("Backボタンを入れる")] GameObject _backButton;
     */
 
     //Log 関連
@@ -68,6 +68,7 @@ public class UIManager : MonoBehaviour
         _enemyHPSlider = GameObject.Find("EnemyHPSlider").GetComponent<Slider>();
 
         //ステータスの初期化
+        /*
         //プレイヤー
         _playerNameText.text = _playerController.PlayerName;
         _playerHPText.text = "HP : " + _playerController.PlayerHP.ToString() + " / " + _playerController._playerMaxHp.ToString();
@@ -76,6 +77,7 @@ public class UIManager : MonoBehaviour
         _enemyNameText.text = _enemyController.EnemyName;
         _enemyHPText.text = _enemyController.EnemyHP.ToString() + " / " + _enemyController._enemyMaxHp.ToString();
         _enemyHPSlider.maxValue = _enemyController._enemyMaxHp;
+        */
 
         //PauseMenu Off
         _menu.SetActive(false);
@@ -100,8 +102,16 @@ public class UIManager : MonoBehaviour
     void Update()
     {
         InputEscape();
+        
         SkillTimer();
         EnemyHPSliderContoroller();
+
+        //プレイヤー
+        _playerHPText.text = "HP : " + _playerController.PlayerHP.ToString() + " / " + _playerController._playerMaxHp.ToString();
+        _playerMPText.text = "MP : " + _playerController.PlayerMP.ToString() + " / " + _playerController._playerMaxMp.ToString();
+
+        ////エネミー
+        _enemyHPText.text = _enemyController.EnemyHP.ToString() + " / " + _enemyController._enemyMaxHp.ToString();
     }
 
     /// <summary> 

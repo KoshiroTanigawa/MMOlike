@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Ground
   - Enemy
+  - PlayerSword
+  - EnemySword
   - Sword
   layers:
   - Default
