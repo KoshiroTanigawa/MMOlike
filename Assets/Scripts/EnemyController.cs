@@ -48,6 +48,12 @@ public class EnemyController : MonoBehaviour
     [SerializeField]Transform target;
     NavMeshAgent _agent;
 
+    //Audio関連
+    AudioSource _audio;
+    [SerializeField] AudioClip _audioClip1;
+    [SerializeField] AudioClip _audioClip2;
+    [SerializeField] AudioClip _audioClip3;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -55,12 +61,11 @@ public class EnemyController : MonoBehaviour
         _enemyAnim = GetComponent<Animator>();
         _player = GameObject.Find("Player").GetComponent<PlayerController>();
         _agent = GetComponent<NavMeshAgent>();
-
-        //
+        _audio = gameObject.AddComponent<AudioSource>();
 
         //速度セット
         _agent.speed = _speed;
-        _agent.stoppingDistance = 1;
+        _agent.stoppingDistance = 1.5f;
 
         //ステータス初期化
         EnemyHP = _enemyMaxHp;
@@ -104,6 +109,7 @@ public class EnemyController : MonoBehaviour
             _enemySwordCollider.SetActive(true);
 
             _enemyAnim.SetTrigger("Attack1");
+            //_audio.PlayOneShot(_audioClip1);
 
             StartCoroutine("WaitTime1");
         }
@@ -115,6 +121,7 @@ public class EnemyController : MonoBehaviour
             _enemySwordCollider.SetActive(true);
 
             _enemyAnim.SetTrigger("Attack2");
+            //_audio.PlayOneShot(_audioClip2);
 
             StartCoroutine("WaitTime2");
 
@@ -143,6 +150,7 @@ public class EnemyController : MonoBehaviour
         {
             Debug.Log("HIt to Enemy");
             _enemyAnim.SetTrigger("Hit1");
+            _audio.PlayOneShot(_audioClip3);
             EnemyHP -= _player.PlayerDamage;
         }
     }

@@ -82,6 +82,8 @@ public class UIManager : MonoBehaviour
         _enemyHPText.text = _enemyController.EnemyHP.ToString() + " / " + _enemyController._enemyMaxHp.ToString();
         _enemyHPSlider.maxValue = _enemyController._enemyMaxHp;
         */
+        _playerNameText.text = _playerController.PlayerName;
+        _enemyNameText.text = _enemyController.EnemyName;
 
         //PauseMenu Off
         _menu.SetActive(false);

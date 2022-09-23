@@ -114,11 +114,23 @@ public class PlayerController : MonoBehaviour
     [Tooltip("キャラクターが移動可能か判定するフラグ")] bool _isMoving;
     [Tooltip("キャラクターがJump可能か判定するフラグ")] bool _isJumping;
 
+    //Audio関連
+    AudioSource _audio;
+    [SerializeField] AudioClip _audioClip1;
+    [SerializeField] AudioClip _audioClip2;
+    [SerializeField] AudioClip _audioClip3;
+    [SerializeField] AudioClip _audioClip4;
+    [SerializeField] AudioClip _audioClip5;
+    [SerializeField] AudioClip _audioClip6;
+    [SerializeField] AudioClip _audioClip7;
+    [SerializeField] AudioClip _audioClip8;
+
     void Start()
     {
         _playerRb = GetComponent<Rigidbody>();
         _playerAnim = GetComponent<Animator>();
         _enemy = GameObject.Find("Enemy").GetComponent<EnemyController>();
+        _audio = gameObject.AddComponent<AudioSource>();
 
         //重力変更
         Physics.gravity = new Vector3(0, Physics.gravity.y * _gravityScale, 0);
@@ -213,19 +225,25 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1) && OnSkill1)
         {
-            Skill("Skill1", 50, false, 0, RT1);
+            Skill("Skill1", 50, false, 0, RT1, 0);
+            _audio.PlayOneShot(_audioClip1);
         }
         if (Input.GetKeyDown(KeyCode.Alpha2) && OnSkill2)
         {
-            Skill("Skill2", 100, false, 0, RT2);
+            Skill("Skill2", 100, false, 0, RT2, 0);
+            _audio.PlayOneShot(_audioClip2);
+            StartCoroutine("AudioWait");
         }
         if (Input.GetKeyDown(KeyCode.Alpha3) && OnSkill3)
         {
-            Skill("Skill3", 150, false, 0, RT3);
+            Skill("Skill3", 150, false, 0, RT3, 0);
+            _audio.PlayOneShot(_audioClip3);
+            StartCoroutine("AudioWait");
         }
         if (Input.GetKeyDown(KeyCode.Alpha4) && OnSkill4)
         {
-            Skill("Skill4", 0, true, 30, RT4);
+            Skill("Skill4", 0, true, 30, RT4, 30);
+            _audio.PlayOneShot(_audioClip4);
         }
     }
 
@@ -236,7 +254,7 @@ public class PlayerController : MonoBehaviour
     /// <param name="damage"></param>
     /// /// <param name="heal"></param>
     /// <param name="recastTime"></param>
-    void Skill(string skillName, int damage, bool healFlag, int heal, int recastTime)
+    void Skill(string skillName, int damage, bool healFlag, int heal, int recastTime, int mp)
     {
         //剣のCollider On
         _swordCollider.SetActive(true);
@@ -253,13 +271,22 @@ public class PlayerController : MonoBehaviour
         //Hp回復の処理
         if (healFlag)
         {
-            _corutine = HealWaitTime(heal);
+            _corutine = HealWaitTime();
 
-            PlayerHP = PlayerHP + heal;
+            PlayerMP -= mp;
+            PlayerHP += heal;
+            StartCoroutine(_corutine);
+            PlayerHP += heal;
+            StartCoroutine(_corutine);
+            PlayerHP += heal;
+
+            /*
             for (var i = 0; i < 2; i++)
             {
                 StartCoroutine(_corutine);
+                PlayerHP += heal;
             }
+            */
         }
 
         //アニメーション On
@@ -277,14 +304,18 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q) && OnItem1)
         {
             Item(true, false, false, 1.5f);
+            _audio.PlayOneShot(_audioClip5);
+
         }
         if (Input.GetKeyDown(KeyCode.E) && OnItem2)
         {
-            Item(false, true, false, 100);
+            Item(false, true, false, 200);
+            _audio.PlayOneShot(_audioClip6);
         }
         if (Input.GetKeyDown(KeyCode.R) && OnItem3)
         {
-            Item(false, false, true, 100);
+            Item(false, false, true, 150);
+            _audio.PlayOneShot(_audioClip7);
         }
     }
 
@@ -300,6 +331,7 @@ public class PlayerController : MonoBehaviour
         if (damageUp)
         {
             _skillDamageScale = num;
+            StartCoroutine("PowarUpItem");
         }
         else if (hp)
         {
@@ -315,6 +347,7 @@ public class PlayerController : MonoBehaviour
     {
         if (PlayerHP == 0)
         {
+            _isMoving = false;
             _playerAnim.SetBool("isDie", true);
             _playerAnim.SetTrigger("Fall");
             return true;
@@ -343,6 +376,7 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("Hit to Player");
             PlayerHP -= _enemy.EnemyDamage;
+            _audio.PlayOneShot(_audioClip8);
         }
     }
 
@@ -350,10 +384,10 @@ public class PlayerController : MonoBehaviour
     /// 継続回復に使う待ち時間のコルーチン
     /// </summary>
     /// <returns></returns>
-    IEnumerator HealWaitTime(int heal)
+    IEnumerator HealWaitTime()
     {
-        yield return new WaitForSeconds(2f);
-        PlayerHP += heal;
+        yield return new WaitForSeconds(2);
+        Debug.Log("2秒待った");
     }
 
     IEnumerator JumpWaitTime()
@@ -379,6 +413,19 @@ public class PlayerController : MonoBehaviour
 
         //剣の軌跡 Off
         _particleSword.SetActive(false);
+    }
+
+    IEnumerator PowarUpItem() 
+    {
+        yield return new WaitForSeconds(10);
+        _skillDamageScale = 1;
+    }
+
+    IEnumerator AudioWait()
+    {
+        yield return new WaitForSeconds(1.1f);
+        Debug.Log("1.1秒待った");
+        _audio.PlayOneShot(_audioClip1);
     }
 
 }

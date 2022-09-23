@@ -1,5 +1,50 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &696696689
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 696696690}
+  - component: {fileID: 696696691}
+  m_Layer: 0
+  m_Name: EnemySwordCollider
+  m_TagString: EnemySword
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &696696690
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 696696689}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 2.231}
+  m_LocalScale: {x: 0.53338, y: 0.32241, z: 3.368933}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1655529943422979024}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &696696691
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 696696689}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1651294922101435266
 GameObject:
   m_ObjectHideFlags: 0
@@ -548,7 +593,6 @@ GameObject:
   - component: {fileID: 1655529943422979024}
   - component: {fileID: 1626147361251660194}
   - component: {fileID: 1637894386148329276}
-  - component: {fileID: 8529109353464116306}
   m_Layer: 0
   m_Name: SWORD
   m_TagString: EnemySword
@@ -569,6 +613,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 9143982771058975061}
+  - {fileID: 696696690}
   m_Father: {fileID: 1655630897142245312}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 28.256, y: -4.7200003, z: -4.2860003}
@@ -622,20 +667,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &8529109353464116306
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1651737371150777464}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 0ba58477d7691e144a0a24c07f308a44, type: 3}
 --- !u!1 &1651738726214282464
 GameObject:
   m_ObjectHideFlags: 0
@@ -1233,7 +1264,6 @@ GameObject:
   - component: {fileID: 2018224106371412550}
   - component: {fileID: 699230497481924195}
   - component: {fileID: 1323139371287721281}
-  - component: {fileID: 1323139371287721282}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -1304,7 +1334,7 @@ Rigidbody:
   m_AngularDrag: 0.05
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 80
   m_CollisionDetection: 2
 --- !u!114 &699230497481924195
@@ -1319,11 +1349,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a1340bb16c5fbf479da8956db27fcee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _enemyRb: {fileID: 2018224106371412550}
   _particleSword: {fileID: 1878692521342294628}
+  _enemySwordCollider: {fileID: 696696689}
   _speed: 1.5
   _enemyName: Skelton
-  _enemyMaxHp: 1000
+  _enemyMaxHp: 2500
+  _enemyDamage: 50
   target: {fileID: 0}
+  _audioClip1: {fileID: 8300000, guid: d46323e22e74e46baa241cbf48c85671, type: 3}
+  _audioClip2: {fileID: 8300000, guid: fe0b1f9aeb45b41b089175aeeabd5d95, type: 3}
+  _audioClip3: {fileID: 8300000, guid: 3becec1909f194046945d85ac1077772, type: 3}
 --- !u!195 &1323139371287721281
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1337,7 +1373,7 @@ NavMeshAgent:
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
-  m_AngularSpeed: 120
+  m_AngularSpeed: 50
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -1346,19 +1382,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!65 &1323139371287721282
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1652201091491613542}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 3.4816241, y: 6.6242194, z: 2.104403}
-  m_Center: {x: -0.037620068, y: 3.3085682, z: -0.08900324}
 --- !u!1 &1652203800669631260
 GameObject:
   m_ObjectHideFlags: 0

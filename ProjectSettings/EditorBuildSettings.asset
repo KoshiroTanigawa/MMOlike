@@ -9,9 +9,15 @@ EditorBuildSettings:
     path: Assets/Scenes/TitleScene.unity
     guid: bfc0406293a5d494698f2ab636674bb1
   - enabled: 1
+    path: Assets/Scenes/TipScene.unity
+    guid: 1743029151441244a8b1add8b3d9360c
+  - enabled: 1
     path: Assets/Scenes/MainScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
-    path: Assets/Scenes/EndScene.unity
+    path: Assets/Scenes/EndScene1.unity
     guid: 987388813607dbb409d2949e31888844
+  - enabled: 1
+    path: Assets/Scenes/EndScene2.unity
+    guid: 85c2f9afe309e8a49979778374a4bfed
   m_configObjects: {}

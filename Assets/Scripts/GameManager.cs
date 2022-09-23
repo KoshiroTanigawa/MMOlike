@@ -33,11 +33,11 @@ public class GameManager : MonoBehaviour
     {
         if (_enemyController.EnemyDie())
         {
-            SceneManager.LoadScene("");
+            SceneManager.LoadScene("EndScene1");
         }
         else if (_playerController.PlayerDie()) 
         {
-            SceneManager.LoadScene("");
+            SceneManager.LoadScene("EndScene2");
         }
     }
 }

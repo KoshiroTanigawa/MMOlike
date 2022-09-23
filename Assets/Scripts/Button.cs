@@ -15,4 +15,19 @@ public class Button : MonoBehaviour
     {
         SceneManager.LoadScene("MainScene");
     }
+
+    public void OnStartButton()
+    {
+        SceneManager.LoadScene("MainScene");
+    }
+
+    public void OnBackButton()
+    {
+        SceneManager.LoadScene("TitleScene");
+    }
+
+    public void OnTipButton()
+    {
+        SceneManager.LoadScene("TipScene");
+    }
 }

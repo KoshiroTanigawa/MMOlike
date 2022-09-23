@@ -1,5 +1,50 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &782195818
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 782195819}
+  - component: {fileID: 782195820}
+  m_Layer: 0
+  m_Name: PlayerSwordCollider
+  m_TagString: PlayerSword
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &782195819
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 782195818}
+  m_LocalRotation: {x: -0.032405607, y: -0.072266765, z: 0.021017388, w: 0.9966372}
+  m_LocalPosition: {x: -0.168, y: 0.072, z: 0.577}
+  m_LocalScale: {x: 0.16708124, y: 0.14205, z: 1.0367662}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2333902661377341650}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: -3.529, y: -8.377, z: 2.675}
+--- !u!65 &782195820
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 782195818}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &748167401003596299
 GameObject:
   m_ObjectHideFlags: 0
@@ -6444,7 +6489,7 @@ Rigidbody:
   m_AngularDrag: 0.05
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 80
   m_CollisionDetection: 2
 --- !u!114 &2448204820373149496
@@ -6459,22 +6504,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d4efdabd761fed419f6119c5e5a37ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerRb: {fileID: 2336409471508427401}
   _particleSword: {fileID: 748726768293013733}
-  _swordCollider: {fileID: 1144961240079983542}
+  _swordCollider: {fileID: 782195818}
   _speed: 5
   _jumpForce: 5
   _gravityScale: 1.5
   _playerName: Player
-  _playerMaxHp: 300
+  _playerMaxHp: 500
   _playerMaxMp: 150
   _gcd: 0
   _rt1: 2
-  _rt2: 15
-  _rt3: 30
-  _rt4: 30
+  _rt2: 6
+  _rt3: 10
+  _rt4: 15
   _rt5: 15
-  _rt6: 60
-  _rt7: 60
+  _rt6: 45
+  _rt7: 45
+  _audioClip1: {fileID: 8300000, guid: fe0b1f9aeb45b41b089175aeeabd5d95, type: 3}
+  _audioClip2: {fileID: 8300000, guid: d46323e22e74e46baa241cbf48c85671, type: 3}
+  _audioClip3: {fileID: 8300000, guid: d46323e22e74e46baa241cbf48c85671, type: 3}
+  _audioClip4: {fileID: 8300000, guid: 4b4dd7245f6104c8c8eb07ccf6b386ed, type: 3}
+  _audioClip5: {fileID: 8300000, guid: 35fbad8cdde724f11ba6481f1e64af71, type: 3}
+  _audioClip6: {fileID: 8300000, guid: 29bde6326b4c34ad8a12da475f79b50a, type: 3}
+  _audioClip7: {fileID: 8300000, guid: 29bde6326b4c34ad8a12da475f79b50a, type: 3}
+  _audioClip8: {fileID: 8300000, guid: 7e26c9daf4c32483b9c2790e662d3f1b, type: 3}
 --- !u!1 &2335376379797102480
 GameObject:
   m_ObjectHideFlags: 0
@@ -7173,7 +7227,7 @@ GameObject:
   - component: {fileID: 2333902661377341650}
   - component: {fileID: 2311536803485857250}
   - component: {fileID: 2321882837425868632}
-  - component: {fileID: 1144961240079983542}
+  - component: {fileID: 33955602804914477}
   m_Layer: 0
   m_Name: Sword_1
   m_TagString: PlayerSword
@@ -7194,6 +7248,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 748726768293013732}
+  - {fileID: 782195819}
   m_Father: {fileID: 2333910090374334522}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7247,20 +7302,22 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &1144961240079983542
-MeshCollider:
+--- !u!54 &33955602804914477
+Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2335577318651567350}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: ffa463f78df756248bd71544ae012994, type: 3}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &2335579024105547052
 GameObject:
   m_ObjectHideFlags: 0
