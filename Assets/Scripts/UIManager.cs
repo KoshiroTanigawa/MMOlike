@@ -26,6 +26,10 @@ public class UIManager : MonoBehaviour
     //PauseMenu 関連
     [Tooltip("Menuを開いているかのフラグ")] bool _onMenu;
     [SerializeField, Header("ポーズメニュー＆メモのUI"), Tooltip("ポーズメニュー＆メモのテキストを入れる")] GameObject _menu;
+    Vector3 _playerAngularVelocity;
+    Vector3 _playerVelocity;
+    Vector3 _enemyAngularVelocity;
+    Vector3 _enemyVelocity;
 
     /*
     [SerializeField, Header("ExitボタンのUI"), Tooltip("Exitボタンを入れる")] GameObject _exitButton;
@@ -121,11 +125,31 @@ public class UIManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape) && !_onMenu)
         {
+            _enemyAngularVelocity = _enemyController._enemyRb.angularVelocity;
+            _enemyVelocity = _enemyController._enemyRb.velocity;
+            _enemyController._enemyRb.Sleep();
+
+            _playerAngularVelocity = _playerController._playerRb.angularVelocity;
+            _playerVelocity = _playerController._playerRb.velocity;
+
+            _enemyController._enemyRb.Sleep();
+            _playerController._playerRb.Sleep();
+
             _onMenu = true;
             _menu.SetActive(true);
         }
         else if (Input.GetKeyDown(KeyCode.Escape) && _onMenu)
         {
+            _enemyController._enemyRb.WakeUp();
+            _playerController._playerRb.WakeUp();
+
+            _enemyController._enemyRb.angularVelocity = _enemyAngularVelocity;
+            _enemyController._enemyRb.velocity = _enemyVelocity;
+
+            _playerController._playerRb.angularVelocity = _playerAngularVelocity;
+            _playerController._playerRb.velocity = _playerVelocity;
+            _playerController._playerRb.velocity = _playerVelocity;
+
             _onMenu = false;
             _menu.SetActive(false);
         }

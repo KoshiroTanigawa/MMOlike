@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class EnemyController : MonoBehaviour
 {
     // 使用するコンポーネント //
-    Rigidbody _enemyRb;
+    public Rigidbody _enemyRb;
     [SerializeField, Header("剣の軌道")] GameObject _particleSword;
     [SerializeField, Header("剣のCollider")] GameObject _enemySwordCollider;
 
@@ -60,7 +60,7 @@ public class EnemyController : MonoBehaviour
 
         //速度セット
         _agent.speed = _speed;
-        _agent.stoppingDistance = 4;
+        _agent.stoppingDistance = 1;
 
         //ステータス初期化
         EnemyHP = _enemyMaxHp;
@@ -69,11 +69,16 @@ public class EnemyController : MonoBehaviour
         _particleSword.SetActive(false);
     }
 
+    private void FixedUpdate()
+    {
+        EnemyAttack();
+    }
+
     // Update is called once per frame
     void Update()
     {
         //InputEnemySpeed();
-        EnemyAttack();
+        //EnemyAttack();
         //Nav 目的地更新
         _agent.SetDestination(target.position);
     }
@@ -90,7 +95,8 @@ public class EnemyController : MonoBehaviour
     void EnemyAttack() 
     {
         StartCoroutine("AttackWait");
-        if (_rand > 79)
+
+        if (_rand > 69)
         {
             //剣の軌道On
             _particleSword.SetActive(true);
@@ -99,12 +105,9 @@ public class EnemyController : MonoBehaviour
 
             _enemyAnim.SetTrigger("Attack1");
 
-            StartCoroutine("WaitTime");
-
-            //RisetTriger
-            _enemyAnim.ResetTrigger("Attack1");
+            StartCoroutine("WaitTime1");
         }
-        else if (_rand < 81 && _rand > 59)
+        else if (_rand < 71 && _rand > 49)
         {
             //剣の軌道On
             _particleSword.SetActive(true);
@@ -113,17 +116,13 @@ public class EnemyController : MonoBehaviour
 
             _enemyAnim.SetTrigger("Attack2");
 
-            StartCoroutine("WaitTime");
+            StartCoroutine("WaitTime2");
 
-            //RisetTriger
-            _enemyAnim.ResetTrigger("Attack2");
         }
         else 
         {
             return;
         }
-
-
     }
 
     public bool EnemyDie()
@@ -155,14 +154,27 @@ public class EnemyController : MonoBehaviour
         _rand = rand;
     }
 
-    IEnumerator WaitTime()
+    IEnumerator WaitTime1()
     {
         yield return new WaitForSeconds(1.5f);
+        
+        //剣の軌跡 Off
+        _particleSword.SetActive(false);
         //剣のCollider Off
         _enemySwordCollider.SetActive(false);
 
+        _enemyAnim.ResetTrigger("Attack1");
+    }
+
+    IEnumerator WaitTime2()
+    {
+        yield return new WaitForSeconds(1.5f);
+
         //剣の軌跡 Off
         _particleSword.SetActive(false);
+        //剣のCollider Off
+        _enemySwordCollider.SetActive(false);
 
+        _enemyAnim.ResetTrigger("Attack2");
     }
 }

@@ -6,7 +6,7 @@ using DG.Tweening;
 public class PlayerController : MonoBehaviour
 {
     // 使用するコンポーネント //
-    Rigidbody _playerRb;
+    public Rigidbody _playerRb;
     [SerializeField, Header("剣の軌道")] GameObject _particleSword;
     [SerializeField] GameObject _swordCollider;
 
