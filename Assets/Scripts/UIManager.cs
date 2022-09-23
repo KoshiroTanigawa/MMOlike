@@ -20,14 +20,18 @@ public class UIManager : MonoBehaviour
     EnemyController _enemyController;
     [Header("エネミー名のUI"), Tooltip("エネミー名のテキストを入れる")] public TextMeshProUGUI _enemyNameText;
     [Header("エネミーHPのUI"), Tooltip("エネミーHPのテキストを入れる")] public TextMeshProUGUI _enemyHPText;
-    [Header("エネミーHPバー（赤）のUI"), Tooltip("エネミーHPバー（赤）のテキストを入れる")] public Image _enemyRedHPBar;
+    [Header("エネミーHPスライダーのUI"), Tooltip("エネミーHPのスライダーを入れる")] Slider _enemyHPSlider;
+
 
     //PauseMenu 関連
     [Tooltip("Menuを開いているかのフラグ")] bool _onMenu;
     [SerializeField, Header("ポーズメニュー＆メモのUI"), Tooltip("ポーズメニュー＆メモのテキストを入れる")] GameObject _menu;
+
+    /*
     [SerializeField, Header("ExitボタンのUI"), Tooltip("Exitボタンを入れる")] GameObject _exitButton;
     [SerializeField, Header("RestartボタンのUI"), Tooltip("Restartボタンを入れる")] GameObject _restartButton;
     [SerializeField, Header("BackボタンのUI"), Tooltip("Backボタンを入れる")] GameObject _backButton;
+    */
 
     //Log 関連
     [SerializeField, Header("LogのUI"), Tooltip("LogWindowを入れる")] GameObject _logWindow;
@@ -51,18 +55,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI _rtText5;
     [SerializeField] TextMeshProUGUI _rtText6;
     [SerializeField] TextMeshProUGUI _rtText7;
-  
-    //Skill&Itemのリキャスト時間のための変数
-    [SerializeField] int _rt1;
-    [SerializeField] int _rt2;
-    [SerializeField] int _rt3;
-    [SerializeField] int _rt4;
-    [SerializeField] int _rt5;
-    [SerializeField] int _rt6;
-    [SerializeField] int _rt7;
 
-
-    // Start is called before the first frame update
     void Start()
     {
         //プレイヤー関連の参照取得
@@ -72,6 +65,7 @@ public class UIManager : MonoBehaviour
         //エネミー関連の参照取得
         _enemy = GameObject.Find("Enemy");
         _enemyController = _enemy.GetComponent<EnemyController>();
+        _enemyHPSlider = GameObject.Find("EnemyHPSlider").GetComponent<Slider>();
 
         //ステータスの初期化
         //プレイヤー
@@ -81,6 +75,7 @@ public class UIManager : MonoBehaviour
         //エネミー
         _enemyNameText.text = _enemyController.EnemyName;
         _enemyHPText.text = _enemyController.EnemyHP.ToString() + " / " + _enemyController._enemyMaxHp.ToString();
+        _enemyHPSlider.maxValue = _enemyController._enemyMaxHp;
 
         //PauseMenu Off
         _menu.SetActive(false);
@@ -102,14 +97,16 @@ public class UIManager : MonoBehaviour
  
     }
 
-    // Update is called once per frame
     void Update()
     {
         InputEscape();
         SkillTimer();
+        EnemyHPSliderContoroller();
     }
 
-    /// <summary> Escapeボタン入力時の処理/// </summary>
+    /// <summary> 
+    /// ///Escapeボタン入力時の処理
+    /// /// </summary>
     void InputEscape()
     {
         if (Input.GetKeyDown(KeyCode.Escape) && !_onMenu)
@@ -124,6 +121,9 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// スキルのリキャストタイマーの処理
+    /// </summary>
     void SkillTimer()
     {
         //Skill1についての処理
@@ -139,10 +139,10 @@ public class UIManager : MonoBehaviour
             _recastingSkill1.SetActive(true);
 
             //リキャスト時間をセット
-            _rtText1.text = _rt1.ToString();
+            _rtText1.text = _playerController.RT1.ToString();
 
             //リキャスト時間分だけカウントダウン
-            _rtText1.DOCounter(_rt1, 0, _rt1)
+            _rtText1.DOCounter(_playerController.RT1, 0, _playerController.RT1)
                     .SetEase(Ease.Linear)
                     .SetDelay(0.5f)
                     .OnComplete(() =>
@@ -164,10 +164,10 @@ public class UIManager : MonoBehaviour
             _recastingSkill2.SetActive(true);
 
             //リキャスト時間をセット
-            _rtText2.text = _rt2.ToString();
+            _rtText2.text = _playerController.RT2.ToString();
 
             //リキャスト時間分だけカウントダウン
-            _rtText2.DOCounter(_rt2, 0, _rt2)
+            _rtText2.DOCounter(_playerController.RT2, 0, _playerController.RT2)
                     .SetEase(Ease.Linear)
                     .SetDelay(0.5f)
                     .OnComplete(() =>
@@ -189,10 +189,10 @@ public class UIManager : MonoBehaviour
             _recastingSkill3.SetActive(true);
 
             //リキャスト時間をセット
-            _rtText3.text = _rt3.ToString();
+            _rtText3.text = _playerController.RT3.ToString();
 
             //リキャスト時間分だけカウントダウン
-            _rtText3.DOCounter(_rt3, 0, _rt3)
+            _rtText3.DOCounter(_playerController.RT3, 0, _playerController.RT3)
                     .SetEase(Ease.Linear)
                     .SetDelay(0.5f)
                     .OnComplete(() =>
@@ -214,10 +214,10 @@ public class UIManager : MonoBehaviour
             _recastingSkill4.SetActive(true);
 
             //リキャスト時間をセット
-            _rtText4.text = _rt4.ToString();
+            _rtText4.text = _playerController.RT4.ToString();
 
             //リキャスト時間分だけカウントダウン
-            _rtText4.DOCounter(_rt4, 0, _rt4)
+            _rtText4.DOCounter(_playerController.RT4, 0, _playerController.RT4)
                     .SetEase(Ease.Linear)
                     .SetDelay(0.5f)
                     .OnComplete(() =>
@@ -240,10 +240,10 @@ public class UIManager : MonoBehaviour
             _recastingItem1.SetActive(true);
 
             //リキャスト時間をセット
-            _rtText5.text = _rt5.ToString();
+            _rtText5.text = _playerController.RT5.ToString();
 
             //リキャスト時間分だけカウントダウン
-            _rtText5.DOCounter(_rt5, 0, _rt5)
+            _rtText5.DOCounter(_playerController.RT5, 0, _playerController.RT5)
                     .SetEase(Ease.Linear)
                     .SetDelay(0.5f)
                     .OnComplete(() =>
@@ -265,10 +265,10 @@ public class UIManager : MonoBehaviour
             _recastingItem2.SetActive(true);
 
             //リキャスト時間をセット
-            _rtText6.text = _rt6.ToString();
+            _rtText6.text = _playerController.RT6.ToString();
 
             //リキャスト時間分だけカウントダウン
-            _rtText6.DOCounter(_rt6, 0, _rt6)
+            _rtText6.DOCounter(_playerController.RT6, 0, _playerController.RT6)
                     .SetEase(Ease.Linear)
                     .SetDelay(0.5f)
                     .OnComplete(() =>
@@ -290,10 +290,10 @@ public class UIManager : MonoBehaviour
             _recastingItem3.SetActive(true);
 
             //リキャスト時間をセット
-            _rtText7.text = _rt7.ToString();
+            _rtText7.text = _playerController.RT7.ToString();
 
             //リキャスト時間分だけカウントダウン
-            _rtText7.DOCounter(_rt7, 0, _rt7)
+            _rtText7.DOCounter(_playerController.RT7, 0, _playerController.RT7)
                     .SetEase(Ease.Linear)
                     .SetDelay(0.5f)
                     .OnComplete(() =>
@@ -304,6 +304,10 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Log欄にLogを表示する
+    /// </summary>
+    /// <param name="logstr"></param>
     void LogOutPut(string logstr)
     {
         _logText.text += logstr;
@@ -317,8 +321,11 @@ public class UIManager : MonoBehaviour
             _logText.text = "";
     }
 
-    public void EnemyHPBar() 
+    /// <summary>
+    /// EnemyHPSliderの処理
+    /// </summary>
+    void EnemyHPSliderContoroller() 
     {
-
+        _enemyHPSlider.value = _enemyController.EnemyHP;
     }
 }

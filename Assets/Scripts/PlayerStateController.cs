@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerStateController : MonoBehaviour
 {
-    public enum PlayerState
+    enum PlayerState
     {
         Idol,
         Walk,
